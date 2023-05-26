@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="SeatQr">
+        <item>19sBx</item>
+        <item>19sBz</item>
+        <item>19sBA</item>
+        <item>19sBB</item>
+        <item>19sBC</item>
+        <item>19sBD</item>
+        <item>19sBE</item>
+        <item>19sBF</item>
+        <item>19sBG</item>
+        <item>19sBH</item>
+        <item>19sBI</item>
+        <item>19sBJ</item>
+        <item>19sBK</item>
+        <item>19sBL</item>
+        <item>19sBM</item>
+        <item>19sBN</item>
+        <item>19sBO</item>
+        <item>19sBP</item>
+        <item>19sBQ</item>
+        <item>19sBR</item>
+    </string-array>
+</resources>
