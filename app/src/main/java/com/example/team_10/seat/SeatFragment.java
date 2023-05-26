@@ -106,6 +106,7 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
                 seatStatusList.set(seatIndex, false);
                 updateSeatView();
             }
+            
         }
     }
 
