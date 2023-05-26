@@ -11,19 +11,27 @@ import android.widget.GridLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 
 import com.example.team_10.R;
+import com.example.team_10.seat.seatDB.SeatDao;
+import com.example.team_10.seat.seatDB.SeatDatabase;
+import com.example.team_10.seat.seatDB.SeatEntity;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SeatFragment extends Fragment implements BarcodeDetector.Processor<Barcode> {
 
     private ArrayList<Boolean> seatStatusList;
     private GridLayout gridLayout;
     private BarcodeDetector barcodeDetector;
+    private SeatDao seatDao;
+
+    private static final String DATABASE_NAME = "seat_database";
 
     @Nullable
     @Override
@@ -34,6 +42,13 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
 
         initializeSeatStatus();
         updateSeatView();
+
+        // Initialize the SeatDatabase and obtain the SeatDao instance
+        SeatDatabase seatDatabase = Room.databaseBuilder(requireContext(), SeatDatabase.class, DATABASE_NAME)
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+        seatDao = seatDatabase.seatDao();
 
         barcodeDetector = new BarcodeDetector.Builder(getContext())
                 .setBarcodeFormats(Barcode.QR_CODE)
@@ -58,8 +73,11 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
             if (seatIndex >= 0 && seatIndex < seatStatusList.size()) {
                 seatStatusList.set(seatIndex, false);
                 updateSeatView();
+                // Update the seat status in the database
+                String seatId = String.valueOf(seatIndex);
+                boolean occupied = false;
+                seatDao.update(new SeatEntity(seatId, null, occupied));
             }
-
         }
     }
 
@@ -73,6 +91,8 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
 
     private void updateSeatView() {
         int totalSeats = 20; // 4 rows * 5 columns
+
+        gridLayout.removeAllViews(); // Clear the grid layout before updating
 
         for (int i = 0; i < totalSeats; i++) {
             View seatView = new View(getContext());
@@ -106,7 +126,6 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
             return seatIndex;
         } catch (NumberFormatException e) {
             e.printStackTrace();
-
             return -1; // 추출에 실패한 경우 -1을 반환
         }
     }

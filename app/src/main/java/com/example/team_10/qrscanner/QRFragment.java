@@ -19,9 +19,13 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.room.Room;
 
 import com.example.team_10.R;
 import com.example.team_10.seat.SeatFragment;
+import com.example.team_10.seat.seatDB.SeatDao;
+import com.example.team_10.seat.seatDB.SeatDatabase;
+import com.example.team_10.seat.seatDB.SeatEntity;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -36,6 +40,11 @@ public class QRFragment extends Fragment {
 
     private SurfaceView surfaceView;
     private CameraSource cameraSource;
+
+    private SeatDatabase seatDatabase;
+    private SeatDao seatDao;
+    private static final String DATABASE_NAME = "seats-database";
+
 
     @Nullable
     @Override
@@ -94,6 +103,17 @@ public class QRFragment extends Fragment {
 
                     Log.d(TAG, "QR Code Value: " + qrCodeValue);
 
+                    seatDatabase = Room.databaseBuilder(getContext().getApplicationContext(), SeatDatabase.class, DATABASE_NAME)
+                            .fallbackToDestructiveMigration()
+                            .allowMainThreadQueries()
+                            .build();
+                    seatDao = seatDatabase.seatDao();
+
+                    String seatId = String.valueOf(1);
+                    String userId = "";
+                    boolean occupied = true; // Set initial value as required
+                    SeatEntity seat = new SeatEntity(seatId, userId, occupied);
+                    seatDao.update(seat);
                     // Create an instance of the SeatFragment
                     SeatFragment seatFragment = new SeatFragment();
                     // Get the FragmentManager

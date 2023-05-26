@@ -24,4 +24,7 @@ public interface SeatDao {
 
     @Query("SELECT * FROM seats")
     List<SeatEntity> getAllSeats();
+
+    @Query("SELECT occupied FROM seats WHERE seatId = :seatId")
+    boolean isSeatOccupied(String seatId);
 }
