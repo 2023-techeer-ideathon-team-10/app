@@ -142,6 +142,7 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
             return seatIndex;
         } catch (NumberFormatException e) {
             e.printStackTrace();
+
             return -1; // 추출에 실패한 경우 -1을 반환
         }
     }
