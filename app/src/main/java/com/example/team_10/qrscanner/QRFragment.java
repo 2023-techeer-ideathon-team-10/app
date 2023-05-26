@@ -17,8 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.team_10.R;
+import com.example.team_10.seat.SeatFragment;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -87,11 +90,22 @@ public class QRFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0) {
-                    String qrCodeValue = barcodes.valueAt(0).displayValue;
+                    String qrCodeValue = barcodes.valueAt(0).rawValue;
+
                     Log.d(TAG, "QR Code Value: " + qrCodeValue);
-                    // You can handle the scanned QR code value here
-                    // For example, display it in a TextView or pass it to another function
-                    showToast(qrCodeValue);
+
+                    // Create an instance of the SeatFragment
+                    SeatFragment seatFragment = new SeatFragment();
+                    // Get the FragmentManager
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    // Start a FragmentTransaction
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    // Replace the current fragment with the SeatFragment
+                    fragmentTransaction.replace(R.id.fragmentContainer, seatFragment);
+                    // Add the transaction to the back stack (optional)
+                    fragmentTransaction.addToBackStack(null);
+                    // Commit the transaction
+                    fragmentTransaction.commit();
                 }
             }
         });
@@ -111,7 +125,7 @@ public class QRFragment extends Fragment {
     }
 
     private void showToast(final String message) {
-        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show());
+        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message.substring(24), Toast.LENGTH_SHORT).show());
     }
 
     @Override

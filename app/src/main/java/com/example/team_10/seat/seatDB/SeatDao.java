@@ -1,6 +1,7 @@
 package com.example.team_10.seat.seatDB;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -17,6 +18,9 @@ public interface SeatDao {
 
     @Update
     void update(SeatEntity seat);
+
+    @Delete
+    void delete(SeatEntity seat);
 
     @Query("SELECT * FROM seats")
     List<SeatEntity> getAllSeats();

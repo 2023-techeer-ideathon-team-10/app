@@ -9,20 +9,30 @@ public class SeatEntity {
 
     @PrimaryKey
     @NonNull
-    private String id;
+    private String seatId;
+    private String userId;
     private boolean occupied;
 
-    public SeatEntity(String id, boolean occupied) {
-        this.id = id;
+    public SeatEntity(String seatId, String userId, boolean occupied) {
+        this.seatId = seatId;
+        this.userId = userId;
         this.occupied = occupied;
     }
 
-    public String getId() {
-        return id;
+    public String getSeatId() {
+        return seatId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSeatId(String seatId) {
+        this.seatId = seatId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String seatId) {
+        this.userId = userId;
     }
 
     public boolean isOccupied() {

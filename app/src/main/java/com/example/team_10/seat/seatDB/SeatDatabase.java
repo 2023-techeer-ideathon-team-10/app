@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.team_10.seat.seatDB.SeatEntity;
 
-@Database(entities = {SeatEntity.class}, version = 1)
+@Database(entities = {SeatEntity.class}, version = 3)
 public abstract class SeatDatabase extends RoomDatabase {
 
     public abstract SeatDao seatDao();

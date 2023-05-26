@@ -1,6 +1,10 @@
 package com.example.team_10;
 
+import static java.security.AccessController.getContext;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -29,23 +33,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         ///////
-
         seatDatabase = Room.databaseBuilder(getApplicationContext(), SeatDatabase.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
         seatDao = seatDatabase.seatDao();
         for (int i = 1; i <= 20; i++) {
-            String id = String.valueOf(i);
+            String seatId = String.valueOf(i);
+            String userId = "";
             boolean occupied = false; // Set initial value as required
-            SeatEntity seat = new SeatEntity(id, occupied);
+            SeatEntity seat = new SeatEntity(seatId, userId, occupied);
             seatDao.update(seat);
         }
         ///////
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
 
@@ -56,28 +57,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+        new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
 
-                    switch (item.getItemId()) {
-                        case R.id.nav_qr:
-                            selectedFragment = new QRFragment();
-                            break;
-                        case R.id.nav_seat:
-                            selectedFragment = new SeatFragment();
-                            break;
-                    }
-
-                    if (selectedFragment != null) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragmentContainer, selectedFragment)
-                                .commit();
-                        return true;
-                    } else {
-                        return false;
-                    }
+                switch (item.getItemId()) {
+                    case R.id.nav_qr:
+                        selectedFragment = new QRFragment();
+                        break;
+                    case R.id.nav_seat:
+                        selectedFragment = new SeatFragment();
+                        break;
                 }
-            };
+
+                if (selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragmentContainer, selectedFragment)
+                            .commit();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
 }
