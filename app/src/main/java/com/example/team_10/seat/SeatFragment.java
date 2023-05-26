@@ -29,9 +29,10 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
     private ArrayList<Boolean> seatStatusList;
     private GridLayout gridLayout;
     private BarcodeDetector barcodeDetector;
-    private SeatDao seatDao;
 
-    private static final String DATABASE_NAME = "seat_database";
+    private SeatDatabase seatDatabase;
+    private SeatDao seatDao;
+    private static final String DATABASE_NAME = "seats-database";
 
     @Nullable
     @Override
@@ -94,6 +95,12 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
 
         gridLayout.removeAllViews(); // Clear the grid layout before updating
 
+        seatDatabase = Room.databaseBuilder(getActivity().getApplicationContext(), SeatDatabase.class, DATABASE_NAME)
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+        seatDao = seatDatabase.seatDao();
+
         for (int i = 0; i < totalSeats; i++) {
             View seatView = new View(getContext());
 
@@ -105,7 +112,7 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
             params.setMargins(10, 10, 10, 10); // Set margins if you want some spacing between your seats
             seatView.setLayoutParams(params);
 
-            if (seatStatusList.get(i)) {
+            if (!seatDao.isSeatOccupied(Integer.toString(i + 1))) {
                 seatView.setBackgroundColor(Color.WHITE); // 사용 가능한 좌석은 흰색으로 표시
             } else {
                 seatView.setBackgroundColor(Color.RED); // 사용 중인 좌석은 빨간색으로 표시

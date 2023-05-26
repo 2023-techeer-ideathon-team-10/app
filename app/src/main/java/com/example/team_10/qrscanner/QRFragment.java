@@ -45,8 +45,6 @@ public class QRFragment extends Fragment {
     private SeatDao seatDao;
     private static final String DATABASE_NAME = "seats-database";
 
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
