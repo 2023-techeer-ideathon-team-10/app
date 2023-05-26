@@ -141,9 +141,9 @@ public class QRFragment extends Fragment {
                 .allowMainThreadQueries()
                 .build();
         seatDao = seatDatabase.seatDao();
+        boolean occupied = true;
         String seatId = finalLoc;
         String userId = "";
-        boolean occupied = true; // Set initial value as required
         SeatEntity seat = new SeatEntity(seatId, userId, occupied);
         seatDao.update(seat);
         /////////////////////////
