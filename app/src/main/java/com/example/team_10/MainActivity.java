@@ -31,19 +31,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-//        ///////
-//        seatDatabase = Room.databaseBuilder(getApplicationContext(), SeatDatabase.class, DATABASE_NAME)
-//                .fallbackToDestructiveMigration()
-//                .allowMainThreadQueries()
-//                .build();
-//        seatDao = seatDatabase.seatDao();
-//        for (int i = 1; i <= 20; i++) {
-//            String id = String.valueOf(i);
-//            boolean occupied = false; // Set initial value as required
-//            SeatEntity seat = new SeatEntity(id, occupied);
-//            seatDao.insert(seat);
-//        }
-//        ///////
+        ///////
+
+        seatDatabase = Room.databaseBuilder(getApplicationContext(), SeatDatabase.class, DATABASE_NAME)
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+        seatDao = seatDatabase.seatDao();
+        for (int i = 1; i <= 20; i++) {
+            String id = String.valueOf(i);
+            boolean occupied = false; // Set initial value as required
+            SeatEntity seat = new SeatEntity(id, occupied);
+            seatDao.update(seat);
+        }
+        ///////
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
