@@ -49,9 +49,7 @@ public class QRFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.qr_fragment, container, false);
-
         surfaceView = view.findViewById(R.id.surfaceView);
-
         // Create a barcode detector
         BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(getContext())
                 .setBarcodeFormats(Barcode.QR_CODE)
@@ -77,23 +75,19 @@ public class QRFragment extends Fragment {
                             new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
                 }
             }
-
             @Override
             public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
             }
-
             @Override
             public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
                 cameraSource.stop();
             }
         });
-
         // Set barcode processor
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
             }
-
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
