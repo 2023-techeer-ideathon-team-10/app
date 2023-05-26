@@ -86,6 +86,7 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
         barcodeDetector = new BarcodeDetector.Builder(getContext())
                 .setBarcodeFormats(Barcode.QR_CODE)
                 .build();
+
         barcodeDetector.setProcessor(this);
 
         return view;
