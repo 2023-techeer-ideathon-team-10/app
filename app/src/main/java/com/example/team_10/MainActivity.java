@@ -10,18 +10,25 @@ import androidx.fragment.app.Fragment;
 
 import com.example.team_10.qrscanner.QRFragment;
 import com.example.team_10.seat.SeatFragment;
+import com.example.team_10.seat.seatDB.SeatDao;
+import com.example.team_10.seat.seatDB.SeatDatabase;
 
 import com.example.team_10.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SeatDatabase seatDatabase;
+    private SeatDao seatDao;
+    private static final String DATABASE_NAME = "seats-database";
     private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
