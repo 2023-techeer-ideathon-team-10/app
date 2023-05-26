@@ -1,5 +1,6 @@
 package com.example.team_10.seat.seatDB;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,6 +8,7 @@ import androidx.room.PrimaryKey;
 public class SeatEntity {
 
     @PrimaryKey
+    @NonNull
     private String id;
     private boolean occupied;
 

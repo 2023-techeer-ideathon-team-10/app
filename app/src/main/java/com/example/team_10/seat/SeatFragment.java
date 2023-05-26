@@ -15,54 +15,6 @@ import androidx.fragment.app.Fragment;
 import com.example.team_10.R;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
-
-import java.util.ArrayList;
-
-//public class SeatFragment extends Fragment {
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.seat_fragment, container, false);
-//
-//        GridLayout gridLayout = view.findViewById(R.id.gridLayout);
-//
-//        int totalSeats = 20; // 4 rows * 5 columns
-//
-//        for (int i = 0; i < totalSeats; i++) {
-//            View seatView = new View(getContext());
-//
-//            // Set some basic layout parameters for the seat views
-//            int size = getResources().getDimensionPixelSize(R.dimen.seat_size);
-//            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//            params.width = size;
-//            params.height = size;
-//            params.setMargins(10, 10, 10, 10); // Set margins if you want some spacing between your seats
-//            seatView.setLayoutParams(params);
-//
-//            // Set the background color to white
-//            seatView.setBackgroundColor(Color.WHITE);
-//
-//            // Finally, add the seat view to the grid
-//            gridLayout.addView(seatView);
-//        }
-//
-//        return view;
-//    }
-//}
-import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridLayout;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.example.team_10.R;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.util.ArrayList;
@@ -123,13 +75,23 @@ public class SeatFragment extends Fragment implements BarcodeDetector.Processor<
         int totalSeats = 20; // 4 rows * 5 columns
 
         for (int i = 0; i < totalSeats; i++) {
-            View seatView = gridLayout.getChildAt(i);
+            View seatView = new View(getContext());
+
+            // Set some basic layout parameters for the seat views
+            int size = getResources().getDimensionPixelSize(R.dimen.seat_size);
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = size;
+            params.height = size;
+            params.setMargins(10, 10, 10, 10); // Set margins if you want some spacing between your seats
+            seatView.setLayoutParams(params);
 
             if (seatStatusList.get(i)) {
                 seatView.setBackgroundColor(Color.WHITE); // 사용 가능한 좌석은 흰색으로 표시
             } else {
                 seatView.setBackgroundColor(Color.RED); // 사용 중인 좌석은 빨간색으로 표시
             }
+
+            gridLayout.addView(seatView);
         }
     }
 
