@@ -104,17 +104,6 @@ public class QRFragment extends Fragment {
 
                     Log.d(TAG, "QR Code Value: " + qrCodeValue);
                     showToast(qrCodeValue);
-                    seatDatabase = Room.databaseBuilder(getContext().getApplicationContext(), SeatDatabase.class, DATABASE_NAME)
-                            .fallbackToDestructiveMigration()
-                            .allowMainThreadQueries()
-                            .build();
-                    seatDao = seatDatabase.seatDao();
-
-                    String seatId = String.valueOf(1);
-                    String userId = "";
-                    boolean occupied = true; // Set initial value as required
-                    SeatEntity seat = new SeatEntity(seatId, userId, occupied);
-                    seatDao.update(seat);
                     // Create an instance of the SeatFragment
                     SeatFragment seatFragment = new SeatFragment();
                     // Get the FragmentManager
@@ -148,8 +137,19 @@ public class QRFragment extends Fragment {
     private void showToast(final String message) {
         String[] seatArray = getResources().getStringArray(R.array.SeatQr);
         final String finalLoc = findSeatLocation(message.substring(24), seatArray);
-
-        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), finalLoc, Toast.LENGTH_SHORT).show());
+        ///////////////////////
+        seatDatabase = Room.databaseBuilder(getActivity().getApplicationContext(), SeatDatabase.class, DATABASE_NAME)
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+        seatDao = seatDatabase.seatDao();
+        String seatId = finalLoc;
+        String userId = "";
+        boolean occupied = true; // Set initial value as required
+        SeatEntity seat = new SeatEntity(seatId, userId, occupied);
+        seatDao.update(seat);
+        /////////////////////////
+        //getActivity().runOnUiThread(() -> Toast.makeText(getContext(), finalLoc, Toast.LENGTH_SHORT).show());
     }
 
     private String findSeatLocation(String message, String[] seatArray) {
