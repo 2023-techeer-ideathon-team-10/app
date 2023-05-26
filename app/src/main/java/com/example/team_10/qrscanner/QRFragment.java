@@ -46,6 +46,7 @@ public class QRFragment extends Fragment {
     private static final String DATABASE_NAME = "seats-database";
 
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,7 +103,7 @@ public class QRFragment extends Fragment {
                     String qrCodeValue = barcodes.valueAt(0).rawValue;
 
                     Log.d(TAG, "QR Code Value: " + qrCodeValue);
-
+                    showToast(qrCodeValue);
                     seatDatabase = Room.databaseBuilder(getContext().getApplicationContext(), SeatDatabase.class, DATABASE_NAME)
                             .fallbackToDestructiveMigration()
                             .allowMainThreadQueries()
@@ -145,7 +146,21 @@ public class QRFragment extends Fragment {
     }
 
     private void showToast(final String message) {
-        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message.substring(24), Toast.LENGTH_SHORT).show());
+        String[] seatArray = getResources().getStringArray(R.array.SeatQr);
+        final String finalLoc = findSeatLocation(message.substring(24), seatArray);
+
+        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), finalLoc, Toast.LENGTH_SHORT).show());
+    }
+
+    private String findSeatLocation(String message, String[] seatArray) {
+        String loc = "";
+        for (int i = 0; i < seatArray.length; i++) {
+            if (seatArray[i].equals(message)) {
+                loc = Integer.toString(i + 1);
+                break;
+            }
+        }
+        return loc;
     }
 
     @Override
